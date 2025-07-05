@@ -115,7 +115,7 @@ def dataunderstanding():
         st.subheader("📋 Informasi Struktur Datasets")
         st.dataframe(info_credit_df)
 
-    with st.expander("🧹 Data Pre Processing (Python with Google Colab)"):
+    with st.expander("📓 Data Pre Processing (Python with Google Colab)"):
 
         # Step 1: Filtering
         st.subheader("📌 1. Filtering Data Kredit 12 Bulan Terakhir")
@@ -241,10 +241,9 @@ def dataunderstanding():
         # Drop kolom dari X_train dan X_test (inplace=False agar bisa dikontrol)
         X_train = X_train.drop(columns=drop_cols, errors='ignore')
         X_test = X_test.drop(columns=drop_cols, errors='ignore')
-        X_train.info()
+        print(X_train.head())
 
         st.info("✅ Fitur DAYS_BIRTH, DAYS_EMPLOYED, FLAG_MOBIL, ID di hapus dikarenakan tidak digunakan lagi untuk proses selanjutnya.")
-
 
         import matplotlib.pyplot as plt
         import seaborn as sns
@@ -272,6 +271,77 @@ def dataunderstanding():
         check_plot(X_train, pilih_var_outlier)
         st.info("✅ Ditemukan Outlier pada CNT_CHILDREN (jumlah anak), AMT_INCOME_TOTAL (total penghasilan), dan CNT_FAM_MEMBERS (jumlah anggota keluarga) tapi idak dikonversikan / tidak dihapus karena sifatnya masih wajar.")
         
+        # Feature Engineering
+    with st.expander("⚙️ Feature Engineering (Python with Google Colab)"):
+    
+        # 1. Encoding & Scaling
+        st.subheader("📊 1. Encoding dan Scaling")
+        
+        pilih6 = st.radio("📌 Tampilkan proses Encoding dan Scaling?", ["Tampilkan", "Sembunyikan"], index=0, key="fe6")
+        if pilih6 == "Tampilkan":
+            # Menentukan kolom numerik & kategorikal
+            numerical_features = X_train.select_dtypes(include=['int64', 'float64']).columns.tolist()
+            categorical_features = X_train.select_dtypes(include=['object']).columns.tolist()
+
+            # Pipeline transformasi
+            from sklearn.compose import ColumnTransformer
+            from sklearn.preprocessing import StandardScaler, OneHotEncoder
+
+            preprocessor = ColumnTransformer(transformers=[
+                ('num', StandardScaler(), numerical_features),
+                ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features)
+            ])
+
+            st.success(f"✅ Ditemukan {len(numerical_features)} fitur numerik dan {len(categorical_features)} fitur kategorikal.")
+            st.write("Fitur Numerik:", numerical_features)
+            st.write("Fitur Kategorikal:", categorical_features)
+            st.write(f"📐 X_train shape: {X_train.shape}")
+            st.write(f"📐 X_test shape: {X_test.shape}")
+            st.write("Distribusi label sebelum balancing:")
+            st.dataframe(y_train.value_counts())
+
+        st.markdown("---")
+
+        # 2. Transform Data
+        st.subheader("📊 2. Transformasi Data")
+        
+        pilih7 = st.radio("📌 Tampilkan transformasi data?", ["Tampilkan", "Sembunyikan"], index=0, key="fe7")
+        if pilih7 == "Tampilkan":
+            # Transformasi
+            X_train_processed = preprocessor.fit_transform(X_train)
+            X_test_processed = preprocessor.transform(X_test)
+
+            st.success("✅ Transformasi `fit_transform` untuk X_train dan `transform` untuk X_test telah dilakukan.")
+            st.write(f"📐 Shape X_train_processed: {X_train_processed.shape}")
+            st.write(f"📐 Shape X_test_processed : {X_test_processed.shape}")
+
+        st.markdown("---")
+
+        # 3. Oversampling
+        st.subheader("📊 3. Oversampling (RandomOverSampler)")
+        
+        pilih8 = st.radio("📌 Tampilkan proses oversampling?", ["Tampilkan", "Sembunyikan"], index=0, key="fe8")
+        if pilih8 == "Tampilkan":
+            from imblearn.over_sampling import RandomOverSampler
+            ros = RandomOverSampler(random_state=42)
+            X_resampled, y_resampled = ros.fit_resample(X_train_processed, y_train)
+
+            st.write("Jumlah label sebelum oversampling:")
+            st.dataframe(y_train.value_counts())
+
+            st.write("Jumlah label setelah oversampling:")
+            st.dataframe(pd.Series(y_resampled).value_counts())
+
+            st.success("✅ Oversampling dengan RandomOverSampler berhasil dilakukan.")
+
+            # Kolom hasil encoding
+            encoded_cols = preprocessor.named_transformers_['cat'].get_feature_names_out(categorical_features)
+            all_columns = list(encoded_cols) + numerical_features
+            st.markdown("🧩 Kolom hasil encoding dan scaling:")
+            st.text("\n".join(all_columns))
+
+        st.markdown("---")
+
         # Simpan ke file
         if not os.path.exists("saved"):
             os.makedirs("saved")
@@ -282,3 +352,5 @@ def dataunderstanding():
             joblib.dump(X_test, "saved/X_test.pkl")
             joblib.dump(y_train, "saved/y_train.pkl")
             joblib.dump(y_test, "saved/y_test.pkl")
+
+        

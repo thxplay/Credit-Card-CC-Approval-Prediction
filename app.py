@@ -3,6 +3,16 @@ import pandas as pd
 import joblib
 import os
 
+import warnings
+warnings.filterwarnings("ignore", message=".*use_column_width.*")
+
+#######################
+# ⚙️ Page Configuration
+st.set_page_config(
+    page_title="Credit Card Approval Prediction",
+    page_icon="💳",
+    layout="wide"
+)
 
 # Load model pipeline (include preprocessing)
 @st.cache_resource
@@ -12,8 +22,11 @@ def load_model():
 model = load_model()
 
 # Title
-st.title("💳 Credit Card Approval Prediction")
+st.sidebar.title('⚙️ Menu Utama')
 page = st.sidebar.radio('Pilih halaman:', ['Prediction', 'Data Understanding', 'Exploratory Data Analysis', 'About Me'])
+
+pd.set_option('display.max_rows', None)  # Menampilkan semua baris
+pd.set_option('display.max_columns', None)  # Jika ada banyak kolom
 
 if page == 'Prediction':
     # Input Form

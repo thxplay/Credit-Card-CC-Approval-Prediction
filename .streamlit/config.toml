@@ -1,9 +1,9 @@
 [theme]
 base = "dark"
-primaryColor = "#9444ED"  # Ungu tua
-backgroundColor = "#121212"  # Latar belakang gelap
-secondaryBackgroundColor = "#181818"  # Latar belakang sidebar
-textColor = "#FFFFFF"  # Teks putih
+primaryColor = "#1E90FF"  # Biru muda laut
+backgroundColor = "#121212"
+secondaryBackgroundColor = "#181818"
+textColor = "#FFFFFF"
 font = "sans serif"
 
 [server]
