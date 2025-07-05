@@ -11,10 +11,13 @@ warnings.filterwarnings("ignore", message=".*use_column_width.*")
 
 # ---------------------- Page Setup ----------------------
 st.set_page_config(page_title="Credit Card Approval Prediction", page_icon="💳", layout="wide")
-st.sidebar.write(f"scikit-learn: {sklearn.__version__}")
+
 @st.cache_resource
 def load_model():
-    return joblib.load("lightgbm_pipeline.pkl")
+    model_path = "lightgbm_pipeline.pkl"
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"❌ File model tidak ditemukan di: {model_path}")
+    return joblib.load(model_path)
 
 model = load_model()
 
