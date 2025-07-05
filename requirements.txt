@@ -1,4 +1,12 @@
 streamlit
 pandas
+scikit-learn
+xgboost
+joblib
+
+numpy
 matplotlib
 seaborn
+scipy
+plotly
+openpyxl
