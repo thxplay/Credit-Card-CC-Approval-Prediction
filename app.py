@@ -4,6 +4,8 @@ import joblib
 import os
 import datetime
 import warnings
+import sklearn
+st.sidebar.write(f"scikit-learn: {sklearn.__version__}")
 
 warnings.filterwarnings("ignore", message=".*use_column_width.*")
 
@@ -102,6 +104,7 @@ if page == 'Prediction':
 
         except Exception as e:
             st.error(f"❌ Gagal melakukan prediksi: {e}")
+
 
 # ---------------------- Other Pages ----------------------
 elif page == 'Data Understanding':
