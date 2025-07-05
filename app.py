@@ -14,7 +14,7 @@ st.set_page_config(page_title="Credit Card Approval Prediction", page_icon="💳
 st.sidebar.write(f"scikit-learn: {sklearn.__version__}")
 @st.cache_resource
 def load_model():
-    return joblib.load("model/lightgbm_pipeline.pkl")
+    return joblib.load("lightgbm_pipeline.pkl")
 
 model = load_model()
 
