@@ -3,7 +3,7 @@ pandas
 scikit-learn
 xgboost
 joblib
-
+python
 numpy
 matplotlib
 seaborn
