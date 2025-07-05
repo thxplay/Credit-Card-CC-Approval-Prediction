@@ -5,13 +5,13 @@ import os
 import datetime
 import warnings
 import sklearn
-st.sidebar.write(f"scikit-learn: {sklearn.__version__}")
+
 
 warnings.filterwarnings("ignore", message=".*use_column_width.*")
 
 # ---------------------- Page Setup ----------------------
 st.set_page_config(page_title="Credit Card Approval Prediction", page_icon="💳", layout="wide")
-
+st.sidebar.write(f"scikit-learn: {sklearn.__version__}")
 @st.cache_resource
 def load_model():
     return joblib.load("model/lightgbm_pipeline.pkl")
@@ -78,29 +78,15 @@ if page == 'Prediction':
 
             st.markdown("### 🎯 Hasil Prediksi")
             if pred == 0:
-                st.success(f"✅ Kredit DISETUJUI — Probabilitas Disetujui: {1 - proba:.2%}")
+                st.success(f"✅ Kredit DISETUJUI — Probabilitas Disetujui: {(1 - proba):.2%}")
             else:
                 st.error(f"❌ Kredit DITOLAK — Probabilitas Ditolak: {proba:.2%}")
 
-            # Simpan log hasil prediksi
-            log_row = X_input.copy()
-            log_row["Prediction"] = "Approved" if pred == 0 else "Rejected"
-            log_row["Probability"] = round(proba if pred == 1 else 1 - proba, 4)
-            log_row["Timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-            log_file = "prediction_log.csv"
-            if os.path.exists(log_file):
-                log_df = pd.read_csv(log_file)
-                log_df = pd.concat([log_df, log_row], ignore_index=True)
-            else:
-                log_df = log_row
-
-            log_df.to_csv(log_file, index=False)
-
-            # Tombol download
-            st.markdown("### 📥 Unduh Hasil Prediksi")
-            csv = log_row.to_csv(index=False).encode("utf-8")
-            st.download_button("📄 Download sebagai CSV", csv, "credit_prediction_result.csv", "text/csv")
+            # Letakkan expander DI DALAM try block
+            with st.expander("🧪 Lihat Detail Input & Tipe Data"):
+                st.write(X_input.dtypes)
+                for col in X_input.columns:
+                    st.write(f"{col}: {X_input[col].unique()}")
 
         except Exception as e:
             st.error(f"❌ Gagal melakukan prediksi: {e}")

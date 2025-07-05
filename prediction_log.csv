@@ -1,0 +1,4 @@
+CODE_GENDER,AGE_YEARS,FLAG_OWN_CAR,FLAG_OWN_REALTY,CNT_CHILDREN,NAME_INCOME_TYPE,NAME_EDUCATION_TYPE,NAME_FAMILY_STATUS,NAME_HOUSING_TYPE,OCCUPATION_TYPE,AMT_INCOME_TOTAL,YEARS_EMPLOYED,FLAG_WORK_PHONE,FLAG_PHONE,FLAG_EMAIL,CNT_FAM_MEMBERS,Prediction,Probability,Timestamp
+M,30,Y,Y,0,Working,Secondary / secondary special,Married,House / apartment,Laborers,135000,5,0,0,0,2,Approved,1.0,2025-07-05 20:51:21
+M,30,Y,Y,0,Working,Secondary / secondary special,Married,House / apartment,Laborers,135000,5,0,0,0,2,Approved,1.0,2025-07-05 20:52:30
+M,30,Y,Y,0,Working,Secondary / secondary special,Married,House / apartment,Laborers,135000,5,0,0,0,2,Approved,1.0,2025-07-05 20:53:07
