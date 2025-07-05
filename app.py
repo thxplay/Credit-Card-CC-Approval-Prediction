@@ -14,7 +14,7 @@ st.set_page_config(page_title="Credit Card Approval Prediction", page_icon="💳
 
 @st.cache_resource
 def load_model():
-    model_path = "/model/credit-card-cc-approval-prediction/lightgbm_pipeline.pkl"
+    model_path = "model/credit-card-cc-approval-prediction/lightgbm_pipeline.pkl"
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"❌ Model tidak ditemukan di: {model_path}")
     with open(model_path, "rb") as f:
