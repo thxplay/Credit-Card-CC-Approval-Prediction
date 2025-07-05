@@ -5,7 +5,6 @@ import os
 import datetime
 import warnings
 import sklearn
-import cloudpickle
 
 
 warnings.filterwarnings("ignore", message=".*use_column_width.*")
@@ -13,16 +12,12 @@ warnings.filterwarnings("ignore", message=".*use_column_width.*")
 # ---------------------- Page Setup ----------------------
 st.set_page_config(page_title="Credit Card Approval Prediction", page_icon="💳", layout="wide")
 
-import sklearn
-print(sklearn.__version__)
-
 @st.cache_resource
 def load_model():
     model_path = "/mnt/data/lightgbm_pipeline.pkl"
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"❌ Model tidak ditemukan di: {model_path}")
-    with open(model_path, "rb") as f:
-        return cloudpickle.load(f)
+    return joblib.load(model_path)
 
 model = load_model()
 
