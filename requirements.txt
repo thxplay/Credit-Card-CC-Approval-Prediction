@@ -1,12 +1,14 @@
 streamlit
 pandas
-scikit-learn
-xgboost
-joblib
-python
 numpy
+scikit-learn==1.3.2
+xgboost==1.7.6
+joblib
+
 matplotlib
 seaborn
 scipy
 plotly
 openpyxl
+
+python_version == "3.10"
